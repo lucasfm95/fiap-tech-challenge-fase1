@@ -44,7 +44,7 @@ namespace Fiap.TechChallenge.Infrastructure.Migrations
                 column: "DddNumber",
                 principalTable: "DddState",
                 principalColumn: "DddNumber",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
             
             
             migrationBuilder.InsertData(
