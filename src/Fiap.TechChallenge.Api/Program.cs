@@ -1,4 +1,5 @@
 using Fiap.TechChallenge.Api.Configurations;
+using Fiap.TechChallenge.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,4 +16,5 @@ app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
 app.UseHealthcheck();
+app.UseMiddleware<ExceptionMiddleware>();
 app.Run();
