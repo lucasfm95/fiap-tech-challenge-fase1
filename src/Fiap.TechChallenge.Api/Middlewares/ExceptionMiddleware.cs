@@ -9,7 +9,6 @@ public class ExceptionMiddleware(RequestDelegate next)
     {
         try
         {
-            throw new Exception("Lucas");
             await next(httpContext);
         }
         catch (Exception ex)
