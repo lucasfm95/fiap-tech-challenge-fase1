@@ -2,6 +2,7 @@
 using Fiap.TechChallenge.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fiap.TechChallenge.Infrastructure.Migrations
 {
     [DbContext(typeof(ContactDbContext))]
-    partial class ContactDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240501145307_AddDddStateTable")]
+    partial class AddDddStateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
