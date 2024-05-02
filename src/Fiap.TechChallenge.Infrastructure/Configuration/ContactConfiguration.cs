@@ -1,4 +1,5 @@
 using Fiap.TechChallenge.Domain;
+using Fiap.TechChallenge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
