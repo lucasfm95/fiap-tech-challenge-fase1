@@ -18,7 +18,12 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
         builder.Property(p => p.PhoneNumber)
             .IsRequired()
             .HasMaxLength(9);
-        builder.Property(p => p.DddNumber)
+        builder
+            .Property(p => p.DddNumber)
             .IsRequired();
+        builder
+            .HasOne<DddState>()
+            .WithMany()
+            .HasForeignKey(f => f.DddNumber);
     }
 }
