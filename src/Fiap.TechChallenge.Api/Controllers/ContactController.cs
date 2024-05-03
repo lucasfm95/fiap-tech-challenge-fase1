@@ -12,6 +12,24 @@ namespace Fiap.TechChallenge.Api.Controllers;
 [AllowAnonymous]
 public class ContactController(ContactService contactService) : Controller
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var result = await contactService.GetAllAsync(cancellationToken);
+        return Ok(result);
+    }
+    
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetById([FromRoute]long id, CancellationToken cancellationToken)
+    {
+        var result = await contactService.GetByIdAsync(id, cancellationToken);
+        if (result == null)
+        {
+            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
+        }
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]ContactPostRequest request, CancellationToken cancellationToken)
     {
@@ -25,7 +43,6 @@ public class ContactController(ContactService contactService) : Controller
         var result = await contactService.DeleteAsync(id, cancellationToken);
         if (!result)
         {
-            ;
             return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});

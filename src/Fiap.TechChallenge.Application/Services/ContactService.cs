@@ -7,6 +7,16 @@ namespace Fiap.TechChallenge.Application.Services;
 
 public class ContactService(IContactRepository contactRepository)
 {
+    public async Task<List<Contact>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await contactRepository.FindAllAsync(cancellationToken);
+    }
+    
+    public async Task<Contact?> GetByIdAsync(long id, CancellationToken cancellationToken)
+    {
+        return await contactRepository.FindByIdAsync(id, cancellationToken);
+    }
+    
     public async Task<long> CreateAsync(ContactPostRequest request, CancellationToken cancellationToken)
     {
         var validator = new ContactPostRequestValidator();
