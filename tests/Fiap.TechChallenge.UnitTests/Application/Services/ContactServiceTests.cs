@@ -12,11 +12,14 @@ public class ContactServiceTests
 {
     private readonly Fixture _fixture = new();
     [Fact]
-    public async Task ShouldCadastroAsync()
+    public async Task ShouldCreateWithSuccessAsync()
     {
         // Arrange
         var contact = _fixture
             .Build<ContactPostRequest>()
+            .With(c=>c.Email, "Email@teste.com")
+            .With(c=>c.PhoneNumber, "123456789")
+            .With(c=>c.Name, "Teste")
             .With(c=>c.Ddd, 11)
             .Create();
         

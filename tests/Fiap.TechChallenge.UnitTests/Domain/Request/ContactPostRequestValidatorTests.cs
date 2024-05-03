@@ -9,7 +9,7 @@ public class ContactPostRequestValidatorTests
     private readonly Fixture _fixture = new();
 
     [Fact]
-    public void ShouldReturnErrorWhenDddIsEmpty()
+    public void ShouldReturnErrorWhenEmailIsInvalid()
     {
         // Arrange
         var request = _fixture.Build<ContactPostRequest>()
