@@ -13,4 +13,16 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
         await dbContext.SaveChangesAsync(cancellationToken);
         return contact.Id;
     }
+
+    public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken)
+    {
+        var contact = dbContext.Contacts.FirstOrDefault(c => c.Id == id);
+        if (contact == null)
+        {
+            return false;
+        }
+        dbContext.Contacts.Remove(contact);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }

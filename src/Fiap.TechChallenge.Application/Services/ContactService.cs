@@ -16,4 +16,9 @@ public class ContactService(IContactRepository contactRepository)
         var result = await contactRepository.CreateAsync(contact, cancellationToken);
         return result;
     }
+    
+    public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken)
+    {
+       return await contactRepository.DeleteAsync(id, cancellationToken);
+    }
 }

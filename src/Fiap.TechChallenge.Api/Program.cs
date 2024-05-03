@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Fiap.TechChallenge.Api;
 using Fiap.TechChallenge.Api.Configurations;
 using Fiap.TechChallenge.Api.Middlewares;
