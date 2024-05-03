@@ -16,8 +16,7 @@
       <ProjectReference Include="..\Fiap.TechChallenge.Infrastructure\Fiap.TechChallenge.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
+
+
 
 </Project>

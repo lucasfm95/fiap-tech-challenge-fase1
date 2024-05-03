@@ -1,4 +1,5 @@
 using Fiap.TechChallenge.Domain;
+using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +7,14 @@ namespace Fiap.TechChallenge.Infrastructure.Context;
 
 public class ContactDbContext : DbContext
 {
-    public DbSet<Contact> Contacts { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public ContactDbContext(DbContextOptions<ContactDbContext> options)
+        : base(options)
     {
-        var envConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING_DB_POSTGRES");
-        optionsBuilder.UseNpgsql(envConnectionString);
+        
     }
+    
+    public DbSet<Contact> Contacts { get; set; }
+    public DbSet<DddState> DddStates { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

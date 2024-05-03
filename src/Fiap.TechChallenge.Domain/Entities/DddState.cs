@@ -1,4 +1,4 @@
-namespace Fiap.TechChallenge.Domain;
+namespace Fiap.TechChallenge.Domain.Entities;
 
 public class DddState(short dddNumber, string stateName, string stateAbbreviation)
 {
