@@ -17,7 +17,8 @@ internal static class HealthcheckConfig
                         new
                         {
                             currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                            statusApplication = report.Status.ToString()
+                            statusApplication = report.Status.ToString(),
+                            statusNpgsql = report.Entries["NpgSql"].Status.ToString()
                         });
 
                     context.Response.ContentType = MediaTypeNames.Application.Json;
