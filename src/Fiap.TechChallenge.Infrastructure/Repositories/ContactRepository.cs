@@ -9,7 +9,13 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
 {
     public async Task<List<Contact>> FindAllAsync(CancellationToken cancellationToken)
     {
-        var contacts = await dbContext.Contacts.ToListAsync();
+        var contacts = await dbContext.Contacts.ToListAsync(cancellationToken);
+        return contacts;
+    }
+
+    public async Task<List<Contact>> FindAllByDddAsync(short dddNumber, CancellationToken cancellationToken)
+    {
+        var contacts = await dbContext.Contacts.Where(contact => contact.DddNumber == dddNumber).ToListAsync(cancellationToken);
         return contacts;
     }
 

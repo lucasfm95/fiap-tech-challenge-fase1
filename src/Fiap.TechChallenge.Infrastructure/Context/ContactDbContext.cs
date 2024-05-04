@@ -5,14 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fiap.TechChallenge.Infrastructure.Context;
 
-public class ContactDbContext : DbContext
+public class ContactDbContext(DbContextOptions<ContactDbContext> options) : DbContext(options)
 {
-    public ContactDbContext(DbContextOptions<ContactDbContext> options)
-        : base(options)
-    {
-        
-    }
-    
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<DddState> DddStates { get; set; }
     

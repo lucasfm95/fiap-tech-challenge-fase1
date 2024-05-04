@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.TechChallenge.Api.Controllers;
 
-[Route("api/contacts")]
+[Route("api/[Controller]")]
 [ApiController]
 [AllowAnonymous]
 public class ContactController(ContactService contactService) : Controller
@@ -25,7 +25,18 @@ public class ContactController(ContactService contactService) : Controller
         var result = await contactService.GetByIdAsync(id, cancellationToken);
         if (result == null)
         {
-            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
+            return NoContent();
+        }
+        return Ok(result);
+    }
+    
+    [HttpGet("/ddd/{dddNumber}")]
+    public async Task<IActionResult> GetById([FromRoute]short dddNumber, CancellationToken cancellationToken)
+    {
+        var result = await contactService.GetAllByDddAsync(dddNumber, cancellationToken);
+        if (!result.Any())
+        {
+            return NoContent();
         }
         return Ok(result);
     }
@@ -47,5 +58,4 @@ public class ContactController(ContactService contactService) : Controller
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});
     }
-    
 }
