@@ -12,6 +12,11 @@ public class ContactService(IContactRepository contactRepository)
         return await contactRepository.FindAllAsync(cancellationToken);
     }
     
+    public async Task<List<Contact>> GetAllByDddAsync(short dddNumber, CancellationToken cancellationToken)
+    {
+        return await contactRepository.FindAllByDddAsync(dddNumber, cancellationToken);
+    }
+    
     public async Task<Contact?> GetByIdAsync(long id, CancellationToken cancellationToken)
     {
         return await contactRepository.FindByIdAsync(id, cancellationToken);
