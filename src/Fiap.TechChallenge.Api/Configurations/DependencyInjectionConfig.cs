@@ -2,16 +2,16 @@ using Fiap.TechChallenge.Application.Services;
 using Fiap.TechChallenge.Domain.Repositories;
 using Fiap.TechChallenge.Infrastructure.Repositories;
 
-namespace Fiap.TechChallenge.Api;
+namespace Fiap.TechChallenge.Api.Configurations;
 
-public static class ConfigureDependencyInjection
+internal static class DependencyInjectionConfig
 {
-    public static void RegisterRepositories(this IServiceCollection serviceProvider)
+    internal static void RegisterRepositories(this IServiceCollection serviceProvider)
     {
         serviceProvider.AddScoped<IContactRepository, ContactRepository>();
     }
     
-    public static void RegisterApplicationServices(this IServiceCollection serviceProvider)
+    internal static void RegisterApplicationServices(this IServiceCollection serviceProvider)
     {
         serviceProvider.AddScoped<ContactService>();
     }

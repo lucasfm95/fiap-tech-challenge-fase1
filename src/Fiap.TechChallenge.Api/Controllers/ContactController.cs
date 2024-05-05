@@ -12,6 +12,13 @@ namespace Fiap.TechChallenge.Api.Controllers;
 [AllowAnonymous]
 public class ContactController(ContactService contactService) : Controller
 {
+    /// <summary>
+    /// List all contacts
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Contacts</returns>
+    /// <response code="200">OK</response>
+    /// <response code="500">Internal server error</response>
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
@@ -19,6 +26,15 @@ public class ContactController(ContactService contactService) : Controller
         return Ok(result);
     }
     
+    /// <summary>
+    /// Find contact by id
+    /// </summary>
+    /// <param name="id">Unique contact identify</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Contact</returns>
+    /// <response code="200">OK</response>
+    /// <response code="204">No content</response>
+    /// <response code="500">Internal server error</response>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById([FromRoute]long id, CancellationToken cancellationToken)
     {
@@ -29,7 +45,15 @@ public class ContactController(ContactService contactService) : Controller
         }
         return Ok(result);
     }
-    
+    /// <summary>
+    /// Find contacts by DDD
+    /// </summary>
+    /// <param name="dddNumber">Contact DDD</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Contacts</returns>
+    /// <response code="200">OK</response>
+    /// <response code="204">No content</response>
+    /// <response code="500">Internal server error</response>
     [HttpGet("/ddd/{dddNumber}")]
     public async Task<IActionResult> GetById([FromRoute]short dddNumber, CancellationToken cancellationToken)
     {
