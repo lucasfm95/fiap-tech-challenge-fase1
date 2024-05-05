@@ -17,7 +17,7 @@ builder.Services.RegisterApplicationServices();
 builder.Services.RegisterRepositories();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();
 builder.Services.AddHealthChecks()
     .AddNpgSql(Environment.GetEnvironmentVariable("CONNECTION_STRING_DB_POSTGRES") ?? 
                throw new Exception("CONNECTION_STRING_DB_POSTGRES not found."));
