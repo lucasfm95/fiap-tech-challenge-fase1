@@ -2,8 +2,7 @@
 
 This is a .NET 8 project that provides a RESTful API for managing contacts. The project is written in C# and uses several technologies and frameworks.
 
-[![Build Develop](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml/badge.svg?branch=develop)](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml)
-[![Build Main](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml)
+[![Build](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml/badge.svg)](https://github.com/lucasfm95/fiap-tech-challenge-fase1/actions/workflows/dotnet.yml)
 
 ## Technologies Used
 
