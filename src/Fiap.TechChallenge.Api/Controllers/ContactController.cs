@@ -1,4 +1,4 @@
-using Fiap.TechChallenge.Application.Services;
+using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Domain.Request;
 using Fiap.TechChallenge.Domain.Response;
@@ -10,7 +10,7 @@ namespace Fiap.TechChallenge.Api.Controllers;
 [Route("api/[Controller]")]
 [ApiController]
 [AllowAnonymous]
-public class ContactController(ContactService contactService) : Controller
+public class ContactController(IContactService contactService) : Controller
 {
     /// <summary>
     /// List all contacts

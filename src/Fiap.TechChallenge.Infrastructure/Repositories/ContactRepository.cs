@@ -1,5 +1,5 @@
+using Fiap.TechChallenge.Application.Repositories;
 using Fiap.TechChallenge.Domain.Entities;
-using Fiap.TechChallenge.Domain.Repositories;
 using Fiap.TechChallenge.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 

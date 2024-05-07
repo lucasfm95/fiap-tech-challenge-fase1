@@ -1,6 +1,6 @@
 using Fiap.TechChallenge.Domain.Entities;
 
-namespace Fiap.TechChallenge.Domain.Repositories;
+namespace Fiap.TechChallenge.Application.Repositories;
 
 /// <summary>
 /// Interface repository to manage contact data from database.
