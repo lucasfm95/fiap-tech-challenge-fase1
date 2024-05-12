@@ -53,6 +53,12 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
         return contact.Id;
     }
 
+    /// <summary>
+    ///  Method to remove a contact 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken)
     {
         var contact = dbContext.Contacts.FirstOrDefault(c => c.Id == id);
