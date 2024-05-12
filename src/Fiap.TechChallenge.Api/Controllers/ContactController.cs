@@ -55,7 +55,7 @@ public class ContactController(IContactService contactService) : Controller
     /// <response code="204">No content</response>
     /// <response code="500">Internal server error</response>
     [HttpGet("/ddd/{dddNumber}")]
-    public async Task<IActionResult> GetById([FromRoute]short dddNumber, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetByDdd([FromRoute]short dddNumber, CancellationToken cancellationToken)
     {
         var result = await contactService.GetAllByDddAsync(dddNumber, cancellationToken);
         if (!result.Any())
@@ -78,7 +78,7 @@ public class ContactController(IContactService contactService) : Controller
         var result = await contactService.DeleteAsync(id, cancellationToken);
         if (!result)
         {
-            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
+            return BadRequest(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});
     }

@@ -59,4 +59,57 @@ public class ContactServiceTests
         contactRepository.Verify(c =>
             c.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+    
+    [Fact]
+    private async Task ShouldGetAllWithSuccess()
+    {
+        var contactRepository = new Mock<IContactRepository>();
+        
+        contactRepository.Setup(c => c.FindAllAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<Contact>());
+
+        var contactService = new ContactService(contactRepository.Object);
+        
+        var result = await contactService.GetAllAsync(CancellationToken.None);
+        
+        result.Should().NotBeNull();
+        contactRepository.Verify(c =>
+            c.FindAllAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    [Fact]
+    private async Task ShouldGetAllByDddWithSuccess()
+    {
+        var contactRepository = new Mock<IContactRepository>();
+        
+        contactRepository.Setup(c => c.FindAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<Contact>());
+
+        var contactService = new ContactService(contactRepository.Object);
+        
+        var result = await contactService.GetAllByDddAsync(11, CancellationToken.None);
+        
+        result.Should().NotBeNull();
+        contactRepository.Verify(c =>
+            c.FindAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    private async Task ShouldGetByIdWithSuccess()
+    {
+        var contactRepository = new Mock<IContactRepository>();
+        var contact = new Contact("John Doe", "john@email.com", "123456789", 11);
+        
+        contactRepository.Setup(c => c.FindByIdAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contact);
+
+        var contactService = new ContactService(contactRepository.Object);
+
+        var result = await contactService.GetByIdAsync(1, CancellationToken.None);
+
+        result.Should().BeOfType<Contact>().And.NotBeNull();
+        result.Should().Be(contact);
+        contactRepository.Verify(c =>
+            c.FindByIdAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
 }
