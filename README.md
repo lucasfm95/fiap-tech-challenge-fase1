@@ -34,7 +34,7 @@ The API will be available at `http://localhost:5010` and `https://localhost:7010
 ## Running With Docker
 1. Navigate to the root directory.
 2. Run `docker build -t tech-challenge-api .` to start the application.
-3. Run `docker run --name registry-api -p 5010:80 -d tech-challenge-api` to start the container.
+3. Run `docker run --name tech-challenge-api -p 5010:80 -d tech-challenge-api` to start the container.
 4. The API will be available at `http://localhost:5010`.
 
 ## Running Migrations
