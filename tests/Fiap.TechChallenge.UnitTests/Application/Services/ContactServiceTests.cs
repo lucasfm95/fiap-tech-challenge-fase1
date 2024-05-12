@@ -1,7 +1,7 @@
 using AutoFixture;
+using Fiap.TechChallenge.Application.Repositories;
 using Fiap.TechChallenge.Application.Services;
 using Fiap.TechChallenge.Domain.Entities;
-using Fiap.TechChallenge.Domain.Repositories;
 using Fiap.TechChallenge.Domain.Request;
 using FluentAssertions;
 using Moq;

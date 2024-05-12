@@ -1,11 +1,12 @@
+using Fiap.TechChallenge.Application.Repositories;
+using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
-using Fiap.TechChallenge.Domain.Repositories;
 using Fiap.TechChallenge.Domain.Request;
 using FluentValidation;
 
 namespace Fiap.TechChallenge.Application.Services;
 
-public class ContactService(IContactRepository contactRepository)
+public class ContactService(IContactRepository contactRepository) : IContactService
 {
     public async Task<List<Contact>> GetAllAsync(CancellationToken cancellationToken)
     {
