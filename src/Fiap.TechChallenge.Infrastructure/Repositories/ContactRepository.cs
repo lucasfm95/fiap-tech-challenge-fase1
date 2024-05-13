@@ -46,11 +46,11 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
         return contact;
     }
 
-    public async Task<long> CreateAsync(Contact contact, CancellationToken cancellationToken)
+    public async Task<Contact> CreateAsync(Contact contact, CancellationToken cancellationToken)
     {
         await dbContext.Contacts.AddAsync(contact, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
-        return contact.Id;
+        return contact;
     }
 
     /// <summary>

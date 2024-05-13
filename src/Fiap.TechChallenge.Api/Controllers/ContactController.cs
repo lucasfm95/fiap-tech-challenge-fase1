@@ -64,14 +64,29 @@ public class ContactController(IContactService contactService) : Controller
         }
         return Ok(result);
     }
-    
+    /// <summary>
+    /// Create a new contact
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">OK</response>
+    /// <response code="500">Internal server error</response>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]ContactPostRequest request, CancellationToken cancellationToken)
     {
         var result = await contactService.CreateAsync(request, cancellationToken);
-        return Ok(result);
+        var response = new ContractPostResponse(result.DddNumber, result.Email, result.Name, result.PhoneNumber);
+        
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, response);
+
     }
-    
+    /// <summary>
+    /// Delete contact by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">OK</response>
+    /// <response code="400">Bad request</response>
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete([FromRoute]long id, CancellationToken cancellationToken)
     {

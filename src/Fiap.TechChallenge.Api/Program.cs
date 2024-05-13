@@ -15,7 +15,9 @@ builder.Services.AddDbContext<ContactDbContext>(options =>
 
 builder.Services.RegisterApplicationServices();
 builder.Services.RegisterRepositories();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 builder.Services.AddHealthChecks()
