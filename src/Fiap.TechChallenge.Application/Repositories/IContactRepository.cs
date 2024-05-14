@@ -28,6 +28,6 @@ public interface IContactRepository
     /// <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
     /// <returns>Return a unique contact object from database.</returns>
     public Task<Contact?> FindByIdAsync(long id, CancellationToken cancellationToken);
-    public Task<long> CreateAsync(Contact contact, CancellationToken cancellationToken);
+    public Task<Contact> CreateAsync(Contact contact, CancellationToken cancellationToken);
     public Task<bool> DeleteAsync(long id, CancellationToken cancellationToken);
 }

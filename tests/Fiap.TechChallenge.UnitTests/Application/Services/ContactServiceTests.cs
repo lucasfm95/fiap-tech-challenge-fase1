@@ -23,11 +23,12 @@ public class ContactServiceTests
             .With(c => c.Name, "Teste")
             .With(c => c.Ddd, 11)
             .Create();
+        
+        var returnContact = new Contact(contact.Name, contact.Email, contact.PhoneNumber, contact.Ddd);
 
         var contactRepository = new Mock<IContactRepository>();
-        contactRepository
-            .Setup(x => x.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(1);
+        contactRepository.Setup(x => x.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(returnContact);
 
         var contactService = new ContactService(contactRepository.Object);
 
@@ -35,7 +36,7 @@ public class ContactServiceTests
         var result = await contactService.CreateAsync(contact, CancellationToken.None);
 
         // Assert
-        result.Should().Be(1);
+        result.Should().Be(returnContact);
         contactRepository.Verify(x => x.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 

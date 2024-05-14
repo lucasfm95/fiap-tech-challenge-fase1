@@ -147,4 +147,42 @@ public class ContactControllerTests
         result?.StatusCode.Should().Be((int)HttpStatusCode.NoContent);
         mockContactService.Verify(contactService => contactService.GetAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+    
+    [Fact]
+    private async Task DeleteShouldBeSuccess()
+    {
+        var mockContactService = new Mock<IContactService>();
+        
+        mockContactService.Setup(x =>
+            x.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+        
+        var controller = new ContactController(mockContactService.Object);
+
+        var result = await controller.Delete(1, new CancellationToken()) as OkObjectResult;
+        
+        result.Should().BeOfType<OkObjectResult>().And.NotBeNull();
+        result?.StatusCode.Should().Be((int)HttpStatusCode.OK);
+        mockContactService.Verify(contactService => contactService.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    [Fact]
+    private async Task DeleteShouldReturnBadRequest()
+    {
+        var mockContactService = new Mock<IContactService>();
+        
+        mockContactService.Setup(x =>
+                x.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
+            .Throws<Exception>();
+        
+        var controller = new ContactController(mockContactService.Object);
+
+        await Assert.ThrowsAsync<Exception>(() => controller.Delete(1, new CancellationToken()));
+        
+        mockContactService.Verify(contactService => contactService.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    
+    
+    
 }

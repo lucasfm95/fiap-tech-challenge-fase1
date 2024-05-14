@@ -2,6 +2,7 @@ using Fiap.TechChallenge.Application.Repositories;
 using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Domain.Request;
+using Fiap.TechChallenge.Domain.Response;
 using FluentValidation;
 
 namespace Fiap.TechChallenge.Application.Services;
@@ -23,7 +24,7 @@ public class ContactService(IContactRepository contactRepository) : IContactServ
         return await contactRepository.FindByIdAsync(id, cancellationToken);
     }
     
-    public async Task<long> CreateAsync(ContactPostRequest request, CancellationToken cancellationToken)
+    public async Task<Contact> CreateAsync(ContactPostRequest request, CancellationToken cancellationToken)
     {
         var validator = new ContactPostRequestValidator();
         await validator.ValidateAndThrowAsync(request, cancellationToken);
