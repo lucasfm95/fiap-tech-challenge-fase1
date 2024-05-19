@@ -2,7 +2,6 @@ using Fiap.TechChallenge.Application.Repositories;
 using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Domain.Request;
-using Fiap.TechChallenge.Domain.Response;
 using FluentValidation;
 
 namespace Fiap.TechChallenge.Application.Services;

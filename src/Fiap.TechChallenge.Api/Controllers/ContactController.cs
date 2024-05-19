@@ -10,7 +10,7 @@ namespace Fiap.TechChallenge.Api.Controllers;
 [Route("api/[Controller]")]
 [ApiController]
 [AllowAnonymous]
-public class ContactController(IContactService contactService) : Controller
+public class ContactController(IContactService contactService, ILogger<ContactController> logger) : Controller
 {
     /// <summary>
     /// List all contacts
@@ -93,6 +93,7 @@ public class ContactController(IContactService contactService) : Controller
         var result = await contactService.DeleteAsync(id, cancellationToken);
         if (!result)
         {
+            logger.LogWarning("Contact with ID: {id} not found.", id);
             return BadRequest(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});

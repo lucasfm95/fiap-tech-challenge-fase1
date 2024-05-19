@@ -1,4 +1,3 @@
-using Fiap.TechChallenge.Domain;
 using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
