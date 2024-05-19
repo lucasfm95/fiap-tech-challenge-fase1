@@ -4,6 +4,7 @@ using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Fiap.TechChallenge.UnitTests.Presentation.Controllers;
@@ -26,7 +27,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(contacts);
         
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetAll(cancellationToken) as OkObjectResult;
         
@@ -48,7 +49,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(contacts);
         
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetAll(cancellationToken) as OkObjectResult;
         
@@ -70,7 +71,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetByIdAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(contact);
 
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetById(1, cancellationToken) as OkObjectResult;
 
@@ -90,7 +91,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetByIdAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Contact)null!);
 
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetById(1, cancellationToken) as NoContentResult;
 
@@ -118,7 +119,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(contactsWithDdd11);
 
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetByDdd(11, cancellationToken) as OkObjectResult;
 
@@ -139,7 +140,7 @@ public class ContactControllerTests
             .Setup(contactService => contactService.GetAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Contact>());
 
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.GetByDdd(99, cancellationToken) as NoContentResult;
 
@@ -157,7 +158,7 @@ public class ContactControllerTests
             x.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         var result = await controller.Delete(1, new CancellationToken()) as OkObjectResult;
         
@@ -175,14 +176,10 @@ public class ContactControllerTests
                 x.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()))
             .Throws<Exception>();
         
-        var controller = new ContactController(mockContactService.Object);
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
 
         await Assert.ThrowsAsync<Exception>(() => controller.Delete(1, new CancellationToken()));
         
         mockContactService.Verify(contactService => contactService.DeleteAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
     }
-    
-    
-    
-    
 }

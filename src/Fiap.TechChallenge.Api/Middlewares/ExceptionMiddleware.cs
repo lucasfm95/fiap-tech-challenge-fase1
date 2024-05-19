@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.TechChallenge.Api.Middlewares;
 
-public class ExceptionMiddleware(RequestDelegate next)
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext httpContext)
     {
@@ -15,20 +15,20 @@ public class ExceptionMiddleware(RequestDelegate next)
         }
         catch (ValidationException ex)
         {
-            await HandleValidationExceptionAsync(httpContext, ex);
+            await HandleValidationExceptionAsync(httpContext, ex, logger);
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex);
+            await HandleExceptionAsync(httpContext, ex, logger);
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception, ILogger<ExceptionMiddleware> logger)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-        Console.WriteLine($"Error: {exception.Message}");
+        logger.LogError($"Error: {exception.Message}");
         
         return context.Response.WriteAsync(JsonSerializer.Serialize(new
         {
@@ -36,7 +36,7 @@ public class ExceptionMiddleware(RequestDelegate next)
             Message = "We have some problems, please try again later.",
         } ));
     }
-    private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException validationException)
+    private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException validationException, ILogger<ExceptionMiddleware> logger)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -46,9 +46,9 @@ public class ExceptionMiddleware(RequestDelegate next)
                 x => x.Select(error => error.ErrorMessage).ToArray());
         
         var validationProblemDetails = new ValidationProblemDetails(dictionaryErrors);
-        
-        return context.Response.WriteAsync(JsonSerializer.Serialize(
-            validationProblemDetails));
+        var message = JsonSerializer.Serialize(validationProblemDetails);
+        logger.LogError(message);
+        return context.Response.WriteAsync(message);
     }
 
 }
