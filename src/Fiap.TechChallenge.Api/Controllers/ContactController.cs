@@ -1,4 +1,4 @@
-using Fiap.TechChallenge.Application.Services;
+using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
 using Fiap.TechChallenge.Domain.Request;
 using Fiap.TechChallenge.Domain.Response;
@@ -10,7 +10,7 @@ namespace Fiap.TechChallenge.Api.Controllers;
 [Route("api/[Controller]")]
 [ApiController]
 [AllowAnonymous]
-public class ContactController(ContactService contactService) : Controller
+public class ContactController(IContactService contactService, ILogger<ContactController> logger) : Controller
 {
     /// <summary>
     /// List all contacts
@@ -55,7 +55,7 @@ public class ContactController(ContactService contactService) : Controller
     /// <response code="204">No content</response>
     /// <response code="500">Internal server error</response>
     [HttpGet("/ddd/{dddNumber}")]
-    public async Task<IActionResult> GetById([FromRoute]short dddNumber, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetByDdd([FromRoute]short dddNumber, CancellationToken cancellationToken)
     {
         var result = await contactService.GetAllByDddAsync(dddNumber, cancellationToken);
         if (!result.Any())
@@ -64,21 +64,37 @@ public class ContactController(ContactService contactService) : Controller
         }
         return Ok(result);
     }
-    
+    /// <summary>
+    /// Create a new contact
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">OK</response>
+    /// <response code="500">Internal server error</response>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]ContactPostRequest request, CancellationToken cancellationToken)
     {
         var result = await contactService.CreateAsync(request, cancellationToken);
-        return Ok(result);
+        var response = new ContractPostResponse(result.DddNumber, result.Email, result.Name, result.PhoneNumber);
+        
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, response);
+
     }
-    
+    /// <summary>
+    /// Delete contact by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <response code="200">OK</response>
+    /// <response code="400">Bad request</response>
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete([FromRoute]long id, CancellationToken cancellationToken)
     {
         var result = await contactService.DeleteAsync(id, cancellationToken);
         if (!result)
         {
-            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
+            logger.LogWarning("Contact with ID: {id} not found.", id);
+            return BadRequest(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});
     }

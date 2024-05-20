@@ -1,5 +1,5 @@
+using Fiap.TechChallenge.Application.Repositories;
 using Fiap.TechChallenge.Domain.Entities;
-using Fiap.TechChallenge.Domain.Repositories;
 using Fiap.TechChallenge.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,13 +46,19 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
         return contact;
     }
 
-    public async Task<long> CreateAsync(Contact contact, CancellationToken cancellationToken)
+    public async Task<Contact> CreateAsync(Contact contact, CancellationToken cancellationToken)
     {
         await dbContext.Contacts.AddAsync(contact, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
-        return contact.Id;
+        return contact;
     }
 
+    /// <summary>
+    ///  Method to remove a contact 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken)
     {
         var contact = dbContext.Contacts.FirstOrDefault(c => c.Id == id);
