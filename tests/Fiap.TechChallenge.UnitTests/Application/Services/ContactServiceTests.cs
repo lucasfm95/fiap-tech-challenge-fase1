@@ -59,4 +59,10 @@ public class ContactServiceTests
         contactRepository.Verify(c =>
             c.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Fact]
+    public async Task ShouldUpdateWithSuccess()
+    {
+
+    }
 }

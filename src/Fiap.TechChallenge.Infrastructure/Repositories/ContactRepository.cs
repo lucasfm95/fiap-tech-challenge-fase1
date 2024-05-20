@@ -42,7 +42,7 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
     /// <returns>Return a unique contact object from database.</returns>
     public async Task<Contact?> FindByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var contact = await dbContext.Contacts.FirstOrDefaultAsync(c => c.Id == id, cancellationToken: cancellationToken);
+        var contact = await dbContext.Contacts.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id, cancellationToken: cancellationToken);
         return contact;
     }
 
@@ -63,5 +63,27 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
         dbContext.Contacts.Remove(contact);
         await dbContext.SaveChangesAsync(cancellationToken);
         return true;
+    }
+
+    /// <summary>
+    /// Method to update / replace a contact
+    /// </summary>
+    /// <param name="contact">Contact to update</param>
+    /// <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+    /// <returns></returns>
+    public async Task<bool> UpdateAsync(Contact contact, CancellationToken cancellationToken)
+    {
+        try
+        {
+            dbContext.Contacts.Update(contact);
+            await dbContext.SaveChangesAsync();
+
+            return true;
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

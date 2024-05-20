@@ -36,4 +36,20 @@ public class ContactService(IContactRepository contactRepository)
     {
        return await contactRepository.DeleteAsync(id, cancellationToken);
     }
+
+    public async Task<bool> UpdateAsync(long id, ContactPostRequest request, CancellationToken cancellationToken)
+    {
+        var contact = await GetByIdAsync(id, cancellationToken);
+
+        if(contact is null)
+            return false;
+
+        var validator = new ContactPostRequestValidator();
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
+        var contactUpdated = new Contact(request.Name,request.Email, request.PhoneNumber, request.Ddd);    
+        contactUpdated.Id = id;
+
+        return await contactRepository.UpdateAsync(contactUpdated, cancellationToken);
+    }
 }

@@ -30,4 +30,5 @@ public interface IContactRepository
     public Task<Contact?> FindByIdAsync(long id, CancellationToken cancellationToken);
     public Task<long> CreateAsync(Contact contact, CancellationToken cancellationToken);
     public Task<bool> DeleteAsync(long id, CancellationToken cancellationToken);
+    public Task<bool> UpdateAsync(Contact contact, CancellationToken cancellationToken);
 }
