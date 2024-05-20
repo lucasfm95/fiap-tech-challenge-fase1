@@ -9,7 +9,7 @@
       "applicationUrl": "http://localhost:5010",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "CONNECTION_STRING_DB_POSTGRES": "Host=dpg-cop1g90l5elc7391cd9g-a.virginia-postgres.render.com;Port=5432;Database=tech_challenge_lwym;Username=admin;Password=Pk2wZOlfRQQ1vnJ2hyIRmKPpZBEy3qXR"
+        "CONNECTION_STRING_DB_POSTGRES": ""
       }
     },
     "https": {
@@ -20,7 +20,7 @@
       "applicationUrl": "https://localhost:7010;http://localhost:5010",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "CONNECTION_STRING_DB_POSTGRES": "Host=dpg-cop1g90l5elc7391cd9g-a.virginia-postgres.render.com;Port=5432;Database=tech_challenge_lwym;Username=admin;Password=Pk2wZOlfRQQ1vnJ2hyIRmKPpZBEy3qXR"
+        "CONNECTION_STRING_DB_POSTGRES": ""
       }
     }
   }
