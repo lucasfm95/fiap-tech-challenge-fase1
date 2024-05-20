@@ -98,4 +98,25 @@ public class ContactController(IContactService contactService, ILogger<ContactCo
         }
         return Ok(new DefaultResponse<Contact> { Message = "Contact removed successfully."});
     }
+
+    /// <summary>
+    /// Update contact by Id
+    /// </summary>
+    /// <param name="id">Id of contact</param>
+    /// <param name="request">Contact Request payload with changes</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Contact</returns>
+    /// <response code="200">OK</response>
+    /// <response code="204">No content</response>
+    /// <response code="500">Internal server error</response>
+    [HttpPut("{id:long}")]
+    public async Task<IActionResult> Put([FromRoute] long id, ContactPostRequest request, CancellationToken cancellationToken)
+    {
+        var result = await contactService.UpdateAsync(id, request, cancellationToken);
+        if (!result)
+        {
+            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
+        }
+        return Ok(new DefaultResponse<Contact> { Message = "Contact updated successfully."});
+    }
 }

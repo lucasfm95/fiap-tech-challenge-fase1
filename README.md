@@ -55,6 +55,7 @@ The API will be available at `http://localhost:5010` and `https://localhost:7010
 - `GET /api/contact/ddd/{dddNumber}`: Get all contacts by DDD number.
 - `POST /api/contact`: Create a new contact.
 - `DELETE /api/contact/{id}`: Delete a contact by ID.
+- `PUT /api/contact/{id}`: Update a contact by ID.
 
 ## License
 

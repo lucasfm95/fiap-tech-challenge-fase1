@@ -1,5 +1,6 @@
 using FluentValidation;
 
+
 namespace Fiap.TechChallenge.Domain.Request;
 
 public class ContactPostRequest(short ddd, string email, string phoneNumber, string name)
