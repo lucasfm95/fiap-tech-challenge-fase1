@@ -1,7 +1,10 @@
 using System.Net;
+using AutoFixture;
 using Fiap.TechChallenge.Api.Controllers;
 using Fiap.TechChallenge.Application.Services.Interfaces;
 using Fiap.TechChallenge.Domain.Entities;
+using Fiap.TechChallenge.Domain.Request;
+using Fiap.TechChallenge.Domain.Response;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,6 +14,8 @@ namespace Fiap.TechChallenge.UnitTests.Presentation.Controllers;
 
 public class ContactControllerTests
 {
+    private readonly Fixture _fixture = new ();
+    
     [Fact]
     private async Task GetAllShouldBeSuccess()
     {
@@ -147,6 +152,72 @@ public class ContactControllerTests
         result.Should().BeOfType<NoContentResult>().And.NotBeNull();
         result?.StatusCode.Should().Be((int)HttpStatusCode.NoContent);
         mockContactService.Verify(contactService => contactService.GetAllByDddAsync(It.IsAny<short>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    [Fact]
+    private async Task CreateShouldSuccess()
+    {
+        var mockContactService = new Mock<IContactService>();
+        var cancellationToken = new CancellationToken();
+        var contactPostRequest = _fixture.Create<ContactPostRequest>();
+        var contact = _fixture.Build<Contact>()
+            .With(c => c.Name, contactPostRequest.Name)
+            .With(c => c.DddNumber, contactPostRequest.Ddd)
+            .With(c => c.PhoneNumber, contactPostRequest.PhoneNumber)
+            .With(c=>c.Email, contactPostRequest.Email)
+            .With(c=>c.Id, 1)
+            .Create();
+
+        var contactPostResponse = new ContactPostResponse(contact.DddNumber, contact.Email,  contact.PhoneNumber, contact.Name);
+        
+        mockContactService
+            .Setup(contactService => contactService.CreateAsync(contactPostRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contact);
+
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
+
+        var result = await controller.Create(contactPostRequest, cancellationToken);
+        
+        mockContactService.Verify(contactService => contactService.CreateAsync(contactPostRequest, It.IsAny<CancellationToken>()), Times.Once);
+        result.Should().BeOfType<CreatedAtActionResult>().And.NotBeNull();
+        var createdResult = result as CreatedAtActionResult;
+        createdResult!.StatusCode.Should().Be((int)HttpStatusCode.Created);
+        createdResult.Value.Should().BeEquivalentTo(contactPostResponse);
+        createdResult.ActionName.Should().Be(nameof(controller.GetById));
+    }
+    
+    [Fact]
+    private async Task UpdateShouldBeSuccess()
+    {
+        var mockContactService = new Mock<IContactService>();
+        var cancellationToken = new CancellationToken();
+        var contactPutRequest = _fixture
+            .Build<ContactPutRequest>()
+            .With(c=>c.id, 1)
+            .Create();
+        
+        var contact = _fixture.Build<Contact>()
+            .With(c => c.Name, contactPutRequest.Name)
+            .With(c => c.DddNumber, contactPutRequest.Ddd)
+            .With(c => c.PhoneNumber, contactPutRequest.PhoneNumber)
+            .With(c=>c.Email, contactPutRequest.Email)
+            .With(c=>c.Id, contactPutRequest.id)
+            .Create();
+
+        var contactPutResponse = new ContactPutResponse(contact.DddNumber, contact.Email,  contact.PhoneNumber, contact.Name);
+        
+        mockContactService
+            .Setup(contactService => contactService.UpdateAsync(contactPutRequest, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contact);
+
+        var controller = new ContactController(mockContactService.Object, It.IsAny<ILogger<ContactController>>());
+
+        var result = await controller.Update(contactPutRequest.id, contactPutRequest, cancellationToken);
+        
+        mockContactService.Verify(contactService => contactService.UpdateAsync(contactPutRequest, It.IsAny<CancellationToken>()), Times.Once);
+        var okObjectResult = result as OkObjectResult;
+        okObjectResult!.StatusCode.Should().Be((int)HttpStatusCode.OK);
+        okObjectResult.Value.Should().BeEquivalentTo(new DefaultResponse<ContactPutResponse>(){Data = contactPutResponse, Message = "Contact updated successfully."});
     }
     
     [Fact]

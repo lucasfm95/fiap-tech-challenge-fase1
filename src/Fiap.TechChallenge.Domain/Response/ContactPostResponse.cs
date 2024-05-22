@@ -1,6 +1,6 @@
 namespace Fiap.TechChallenge.Domain.Response;
 
-public class ContractPostResponse(short ddd, string email, string phoneNumber, string name)
+public class ContactPostResponse(short ddd, string email, string phoneNumber, string name)
 {
     public short Ddd { get; init; } = ddd;
     public string Email { get; init; } = email;

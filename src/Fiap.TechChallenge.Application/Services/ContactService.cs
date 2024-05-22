@@ -38,19 +38,25 @@ public class ContactService(IContactRepository contactRepository) : IContactServ
        return await contactRepository.DeleteAsync(id, cancellationToken);
     }
 
-    public async Task<bool> UpdateAsync(long id, ContactPostRequest request, CancellationToken cancellationToken)
+    public async Task<Contact> UpdateAsync(ContactPutRequest request, CancellationToken cancellationToken)
     {
-        var contact = await GetByIdAsync(id, cancellationToken);
+        var contact = await GetByIdAsync(request.id, cancellationToken);
 
-        if(contact is null)
-            return false;
+        if (contact is null)
+        {
+            throw new ValidationException($"Contact with id {request.id} not found.");
+        }
 
-        var validator = new ContactPostRequestValidator();
+        var validator = new ContactPutRequestValidator();
         await validator.ValidateAndThrowAsync(request, cancellationToken);
-
-        var contactUpdated = new Contact(request.Name,request.Email, request.PhoneNumber, request.Ddd);    
-        contactUpdated.Id = id;
-
-        return await contactRepository.UpdateAsync(contactUpdated, cancellationToken);
+        
+        contact.Name = request.Name;
+        contact.Email = request.Email;
+        contact.PhoneNumber = request.PhoneNumber;
+        contact.DddNumber = request.Ddd;
+        
+        await contactRepository.UpdateAsync(contact, cancellationToken);
+        
+        return contact;
     }
 }

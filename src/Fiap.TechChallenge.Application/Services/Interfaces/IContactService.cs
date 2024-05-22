@@ -11,5 +11,5 @@ public interface IContactService
     Task<Contact> CreateAsync(ContactPostRequest request, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(long id, CancellationToken cancellationToken);
 
-    Task<bool> UpdateAsync(long id, ContactPostRequest request, CancellationToken cancellationToken);
+    Task<Contact> UpdateAsync(ContactPutRequest request, CancellationToken cancellationToken);
 }
