@@ -1,19 +1,19 @@
 using FluentValidation;
 
-
 namespace Fiap.TechChallenge.Domain.Request;
 
-public class ContactPostRequest(short ddd, string email, string phoneNumber, string name)
+public class ContactPutRequest(long id, short ddd, string email, string phoneNumber, string name)
 {
+    public long id { get; set; } = id;
     public short Ddd { get; init; } = ddd;
     public string Email { get; init; } = email;
     public string PhoneNumber { get; init; } = phoneNumber;
     public string Name { get; init; } = name;
 }
 
-public class ContactPostRequestValidator : AbstractValidator<ContactPostRequest>
+public class ContactPutRequestValidator : AbstractValidator<ContactPutRequest>
 {
-    public ContactPostRequestValidator()
+    public ContactPutRequestValidator()
     {
         RuleFor(x => x.Ddd).NotEmpty().WithMessage("DDD is required");
         RuleFor(x => x.Ddd).LessThan((short)100).WithMessage("invalid ddd number");

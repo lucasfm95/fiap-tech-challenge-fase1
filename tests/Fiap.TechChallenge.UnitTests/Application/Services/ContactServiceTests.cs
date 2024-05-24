@@ -39,6 +39,42 @@ public class ContactServiceTests
         result.Should().Be(returnContact);
         contactRepository.Verify(x => x.CreateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+    
+    [Fact]
+    public async Task ShouldUpdateWithSuccessAsync()
+    {
+        // Arrange
+        var contactPutRequest = _fixture
+            .Build<ContactPutRequest>()
+            .With(c => c.Email, "Email@teste.com")
+            .With(c => c.PhoneNumber, "123456789")
+            .With(c => c.Name, "Teste")
+            .With(c => c.Ddd, 11)
+            .With(c => c.id, 1)
+            .Create();
+        
+        var contactRepository = new Mock<IContactRepository>();
+        
+        var contact = new Contact("teste 2", "teste@email.com", "123456788", 12){Id = contactPutRequest.id};
+        
+        contactRepository.Setup(x => x.FindByIdAsync(contactPutRequest.id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contact);
+        
+        contactRepository.Setup(x => x.UpdateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        var contactService = new ContactService(contactRepository.Object);
+
+        // Act
+        var result = await contactService.UpdateAsync(contactPutRequest, CancellationToken.None);
+
+        // Assert
+        result.Name.Should().Be(contactPutRequest.Name);
+        result.DddNumber.Should().Be(contactPutRequest.Ddd);
+        result.PhoneNumber.Should().Be(contactPutRequest.PhoneNumber);
+        result.Email.Should().Be(contactPutRequest.Email);
+        contactRepository.Verify(x => x.UpdateAsync(It.IsAny<Contact>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
 
     [Fact]
     public async Task ShouldDeleteWithSuccess()

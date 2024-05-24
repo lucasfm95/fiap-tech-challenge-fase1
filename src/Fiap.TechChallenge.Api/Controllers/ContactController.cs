@@ -70,12 +70,13 @@ public class ContactController(IContactService contactService, ILogger<ContactCo
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <response code="200">OK</response>
+    /// <response code="400">Bad request</response>
     /// <response code="500">Internal server error</response>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody]ContactPostRequest request, CancellationToken cancellationToken)
     {
         var result = await contactService.CreateAsync(request, cancellationToken);
-        var response = new ContractPostResponse(result.DddNumber, result.Email, result.Name, result.PhoneNumber);
+        var response = new ContactPostResponse(result.DddNumber, result.Email,  result.PhoneNumber, result.Name);
         
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, response);
 
@@ -107,16 +108,14 @@ public class ContactController(IContactService contactService, ILogger<ContactCo
     /// <param name="cancellationToken"></param>
     /// <returns>Contact</returns>
     /// <response code="200">OK</response>
-    /// <response code="204">No content</response>
+    /// <response code="400">Bad request</response>
     /// <response code="500">Internal server error</response>
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Put([FromRoute] long id, ContactPostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromRoute] long id, ContactPutRequest request, CancellationToken cancellationToken)
     {
-        var result = await contactService.UpdateAsync(id, request, cancellationToken);
-        if (!result)
-        {
-            return NotFound(new DefaultResponse<Contact> { Message = $"Contact with ID: {id} not found."});
-        }
-        return Ok(new DefaultResponse<Contact> { Message = "Contact updated successfully."});
+        request.id = id;
+        var result = await contactService.UpdateAsync(request, cancellationToken);
+        var response = new ContactPostResponse(result.DddNumber, result.Email,  result.PhoneNumber, result.Name);
+        return Ok(new DefaultResponse<ContactPostResponse> { Message = "Contact updated successfully.", Data = response});
     }
 }

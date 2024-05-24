@@ -79,17 +79,9 @@ public class ContactRepository(ContactDbContext dbContext) : IContactRepository
     /// <returns></returns>
     public async Task<bool> UpdateAsync(Contact contact, CancellationToken cancellationToken)
     {
-        try
-        {
-            dbContext.Contacts.Update(contact);
-            await dbContext.SaveChangesAsync();
+        dbContext.Contacts.Update(contact);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-            return true;
-
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        return true;
     }
 }
