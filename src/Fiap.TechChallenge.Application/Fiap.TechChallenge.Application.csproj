@@ -9,5 +9,5 @@
     <ItemGroup>
       <ProjectReference Include="..\Fiap.TechChallenge.Domain\Fiap.TechChallenge.Domain.csproj" />
     </ItemGroup>
-
+    
 </Project>
