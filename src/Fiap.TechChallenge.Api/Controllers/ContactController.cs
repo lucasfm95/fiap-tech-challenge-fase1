@@ -69,7 +69,7 @@ public class ContactController(IContactService contactService, ILogger<ContactCo
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
-    /// <response code="200">OK</response>
+    /// <response code="201">Created</response>
     /// <response code="400">Bad request</response>
     /// <response code="500">Internal server error</response>
     [HttpPost]
