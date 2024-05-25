@@ -38,10 +38,19 @@ The API will be available at `http://localhost:5010` and `https://localhost:7010
 4. The API will be available at `http://localhost:5010`.
 
 ## Running Migrations
-1. Navigate to the `src/Fiap.TechChallenge.Api` directory.
-2. Run `dotnet ef database update` to create the database and run the migrations.
-3. The database will be created and the tables will be created.
-4. The API will be available at `http://localhost:5010` and `https://localhost:7010`.
+1. Navigate to the `src/Fiap.TechChallenge.Infrastructure` directory.
+2. Add the following code in the `ContactDbContext`:
+3. `protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=123456");
+    }`
+4. Run the following commands to create the database and run the migrations.
+5. `docker-compose up -d`
+6. `cd .\src\Fiap.TechChallenge.Infrastructure\`
+7. `dotnet ef migrations add InitialMigration`
+8. `dotnet ef database update `
+9. The database will be created and the tables will be created.
+10. The API will be available at `http://localhost:5010` and `https://localhost:7010`.
 
 ## Running the Tests
 1. Navigate to the `src/Fiap.TechChallenge.Tests` directory.
